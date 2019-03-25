@@ -8,7 +8,7 @@ label: OverOps Reliability Platform
 description: This Tile provides all compononents of the OverOps reliability platform. Identify and resolve critical errors with continuous code analysis and machine learning across your software delivery lifecycle.
 # metadata_version: 1.8                 # Optional, defaults to 1.8
 packages:
-- name: overops-collector
+- name: overops_collector
   type: app
   manifest:
     memory: 1G
@@ -38,3 +38,10 @@ forms:
   - name: overops_space
     type: string
     label: Space
+- name: server-form1
+  label: OverOps Server
+  properties:
+  - name: install_server
+    type: boolean
+    optional: true
+    label: Install On-Premise OverOps Server
