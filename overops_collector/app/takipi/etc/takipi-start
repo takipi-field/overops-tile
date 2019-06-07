@@ -295,6 +295,10 @@ function utils_wait_for_process()
 	local kill_mode
 	let "kill_mode=15"
 
+	# Most often, process will die in 0.5 second
+	printf "Stopping process $pid_waiting_for..."
+	sleep 0.5
+
 	if [ "$timeout" == "0" ]; then
 		kill_mode=9
 	fi
@@ -307,15 +311,17 @@ function utils_wait_for_process()
 			return 0
 		fi
 
-		sleep 5
-		let "timeout=$timeout-5"
+		sleep 1
+		let "timeout=$timeout-1"
 
-		log $info "Waiting for process $pid_waiting_for to terminate, $timeout seconds left at most"
+		printf "."
 
 		if [ $timeout -le 0 ]; then
 			let "kill_mode=9"
 		fi
 	done
+
+	printf "\n"
 	
 	return 0
 }
@@ -971,7 +977,7 @@ function java_set_java_if_valid()
 				export JAVA_TOOL_OPTIONS="$java_tool_options_backup"
 			fi
 			
-			if [[ "$java_version" < "1.6" ]]; then
+			if [[ "$java_version" == "1."* && "$java_version" < "1.6" ]]; then
 				continue
 			fi
 			
@@ -1767,6 +1773,9 @@ declare -r properties_passphrase="takipi.passphrase"
 declare -r properties_jvm_heap_size="takipi.jvm.heap.size"
 declare -r properties_https_proxy="takipi.https.proxy"
 declare -r properties_unchained_mode="takipi.unchained"
+declare -r properties_handler_threads="takipi.handler.threads"
+declare -r properties_handler_clients="takipi.handler.clients"
+
 # agent properties
 declare -r properties_collector_host="takipi.collector.host"
 declare -r properties_collector_port="takipi.collector.port"
@@ -1819,6 +1828,8 @@ declare overops_daemon_port=""
 declare overops_aos_passphrase=""
 declare overops_java_heap_size=""
 declare overops_unchained_mode="false"
+declare overops_handler_threads=50
+declare overops_handler_clients=20
 declare overops_dry_run="0"
 declare overops_strict_check="0"
 declare overops_priviliged_mode="1"
@@ -2430,6 +2441,10 @@ function overops_load_config_file()
 	[ -z "$overops_shutdown_grace_time" -o $should_override == "1" ] && overops_shutdown_grace_time=$shutdownGraceTime
 	[ -z "$overops_resource_limit" -o $should_override == "1" ] && overops_resource_limit=$takipi_resources_size_limit
 	[ -z "$overops_unchained_mode" -o $should_override == "1" ] && overops_unchained_mode=$takipi_unchained
+	[ -z "$overops_handler_threads" -o $should_override == "1" ] && overops_handler_threads=$takipi_handler_threads
+	[ -z "$overops_handler_clients" -o $should_override == "1" ] && overops_handler_clients=$takipi_handler_clients
+
+
 }
 
 function overops_save_config_file()
@@ -2471,6 +2486,8 @@ function overops_save_config_file()
 "$properties_storage_test_url=$overops_s3_ping_url" $'\n'\
 "$properties_listen_port=$overops_listen_on_port" $'\n'\
 "$properties_unchained_mode=$overops_unchained_mode" $'\n'\
+"$properties_handler_threads=$overops_handler_threads" $'\n'\
+"$properties_handler_clients=$overops_handler_clients" $'\n'\
 "$properties_passphrase=$overops_aos_passphrase" $'\n'\
 "$properties_jvm_heap_size=$overops_java_heap_size" $'\n'\
 "userName=$overops_user_name" $'\n'\
