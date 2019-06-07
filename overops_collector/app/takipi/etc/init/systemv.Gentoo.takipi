@@ -1,0 +1,128 @@
+#!/sbin/runscript
+#
+#	/etc/init.d/takipi
+#
+# Desc: Starts/stops the Takipi daemon
+# Exec: takipi-service
+# Conf: /etc/conf.d/takipi
+# PID:  /var/run/takipi.pid
+#
+#	www.takipi.com
+#
+
+description="Starts/stops the Takipi daemon"
+
+config="/etc/conf.d/takipi"
+PIDFILE=/var/run/takipi.pid
+
+# Source helper functions
+#
+. /etc/init.d/functions.sh
+
+# Source configuration file if present
+#
+[ -r "${config}" ] && . ${config}
+
+# Make sure Takipi is installed
+#
+if [ ! -x "$DAEMON" ]; then
+	eend 2 "Takipi is not installed"
+	return 2
+fi
+
+export TAKIPI_BASE_URL
+export TAKIPI_NATIVE_LIBRARIES
+export JVM_LIB_FILE
+export TAKIPI_MACHINE_NAME
+export TAKIPI_INSTALLATION_TIME
+
+if [ "$http_proxy" = "" -a "$TAKIPI_HTTP_PROXY" != "" ]; then
+	export http_proxy=$TAKIPI_HTTP_PROXY
+fi
+
+if [ "$https_proxy" = "" -a "$TAKIPI_HTTPS_PROXY" != "" ]; then
+	export https_proxy=$TAKIPI_HTTPS_PROXY
+fi
+
+
+
+start()
+{
+	# Return
+	#   0 if daemon has been started
+	#   1 if daemon was already running
+	#   2 if daemon could not be started
+	#	other if failure occurred
+	#
+	ebegin "Starting the Takipi daemon"
+
+	# libjvm.so and secret.key required
+	#
+	if [ ! -r $TAKIPI_HOME/work/secret.key -a ! -r $TAKIPI_HOME/installation.key ]; then
+		eend 2 "Secret key file not found or inaccessible"
+		return 2
+	fi
+
+	if [ ! -r $JVM_LIB_FILE ]; then
+		eend 2 "JVM lib file not found or inaccessible"
+		return 2
+	fi
+
+	export LD_LIBRARY_PATH="$TAKIPI_NATIVE_LIBRARIES"
+
+	# Start the daemon
+	#
+	start-stop-daemon --chuid root --start --quiet --pidfile ${PIDFILE} --exec $DAEMON \
+		--test > /dev/null
+
+	if [ $? -eq 1 ]; then
+		eend 1 "The Takipi daemon is already running"
+		return 1
+	fi
+
+	start-stop-daemon --chuid root --start --quiet --pidfile ${PIDFILE} --exec $DAEMON \
+		-- --daemon --pidfile=${PIDFILE}
+
+	if [ $? -ne 0 ]; then
+		eend 2 "The Takipi daemon could not be started"
+		return 2
+	fi
+
+  	eend $?
+}
+
+stop()
+{
+	# Return
+	#   0 if daemon has been stopped
+	#   1 if daemon was already stopped
+	#   2 if daemon could not be stopped
+	#   other if a failure occurred
+	#
+	ebegin "Stopping the Takipi daemon"
+
+	# Stop the daemon
+	#
+	start-stop-daemon --chuid root --stop --quiet --pidfile ${PIDFILE} --exec $DAEMON
+
+	# Save return value; it might come in handy
+	#
+	local retval=$?
+
+	if [ $retval -eq 0 ]; then
+		eend 0 "The Takipi daemon was stopped successfully"
+		return 0
+	elif [ $retval -eq 1 ]; then
+		eend 1 "The Takipi daemon is not running"
+		return 1
+	fi
+
+	einfo "Shutting down the Takipi daemon"
+
+	# If at first you don't succeed -- try, try again
+	#
+	start-stop-daemon --chuid root --stop --quiet --pidfile ${PIDFILE} --exec $DAEMON \
+		--retry=0/10/KILL/5
+
+	eend $?
+}

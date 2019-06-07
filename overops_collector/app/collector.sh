@@ -1,5 +1,4 @@
 #!/bin/bash
-set
 export TAKIPI_LISTEN_PORT=$PORT
 export TAKIPI_SERVER_NAME=$(echo $VCAP_APPLICATION | jq -r '.name')$INSTANCE_INDEX
 tar -xzvf takipi-latest.tar.gz
