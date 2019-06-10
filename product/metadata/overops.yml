@@ -5,7 +5,7 @@ label: OverOps Reliability Platform
 metadata_version: '1.8'
 minimum_version_for_upgrade: 0.0.1
 name: overops
-product_version: 0.0.9
+product_version: 0.0.4
 rank: 1
 requires_product_versions:
 - name: cf
@@ -16,14 +16,17 @@ standalone: false
 
 
 releases:
-- file: overops-0.0.9.tgz
+- file: overops-0.0.4.tgz
   name: overops
-  version: '0.0.9'
+  version: '0.0.4'
+- file: cf-cli-1.16.0.tgz
+  name: cf-cli
+  version: '1.16.0'
 
 stemcell_criteria:
   os: ubuntu-xenial
   requires_cpi: false
-  version: '250'
+  version: '315'
 
 
 property_blueprints:
@@ -184,6 +187,8 @@ job_types:
   templates:
   - name: deploy-all
     release: overops
+  - name: cf-cli-6-linux
+    release: cf-cli
 - dynamic_ip: 1
   errand: true
   instance_definition:
@@ -260,6 +265,8 @@ job_types:
   templates:
   - name: delete-all
     release: overops
+  - name: cf-cli-6-linux
+    release: cf-cli
 
 
 
@@ -279,4 +286,4 @@ update:
 
 provides_product_versions:
 - name: overops
-  version: '0.0.9'
+  version: '0.0.4'

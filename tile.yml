@@ -11,7 +11,8 @@ packages:
 - name: overops_collector
   type: app
   manifest:
-    memory: 1G
+    memory: 2G
+    disk_quota: 2G
     buildpack: java_buildpack_offline
     path: overops-collector.jar
     command: ./collector.sh

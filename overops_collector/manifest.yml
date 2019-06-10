@@ -7,8 +7,8 @@ applications:
   random-route: true
   path: app
   env:  
-    TAKIPI_BASE_URL: https://backend.takipi.com/
-    TAKIPI_SECRET_KEY: S34504#uIniPX++SL8jpuTC#dO4Imyu8J61pxnqnZMkPYF7ekTp+vCq4bRUcl4aJiQk=#c84f
+    TAKIPI_BASE_URL: https://backend.overops.com/
+    TAKIPI_SECRET_KEY:
   command: ./collector.sh
   routes:
-  - route: tcp.budapest.cf-app.com:1069
+  - route: tcp.palmsprings.cf-app.com
