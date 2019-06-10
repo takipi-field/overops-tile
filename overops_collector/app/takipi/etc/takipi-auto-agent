@@ -1,6 +1,0 @@
-#!/bin/bash
-
-if [[ "$JAVA_TOOL_OPTIONS" != *"-agentlib:TakipiAgent"* ]]; then
-	JAVA_TOOL_OPTIONS="$JAVA_TOOL_OPTIONS -agentlib:TakipiAgent"
-	export JAVA_TOOL_OPTIONS
-fi

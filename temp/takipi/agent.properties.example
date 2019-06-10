@@ -1,8 +1,0 @@
-
-takipi.server.name=
-takipi.application.name=
-takipi.collector.host=
-takipi.collector.port=
-takipi.passphrase=
-shutdownGraceTime=
-takipi.resources.size.limit=

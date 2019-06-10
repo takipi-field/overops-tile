@@ -12,7 +12,7 @@ packages:
   type: app
   manifest:
     memory: 1G
-    buildpack: https://github.com/takipi-field/overops-tile.git
+    buildpack: java_buildpack_offline
     path: overops-collector.jar
     command: ./collector.sh
     routes:

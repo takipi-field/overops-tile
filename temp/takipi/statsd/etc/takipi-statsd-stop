@@ -1,7 +1,0 @@
-#! /bin/bash
-
-echo "Stopping Takipi Statsd daemon"
-
-systemctl stop takipi-statsd.service >/dev/null 2>&1
-/etc/init.d/takipi-statsd stop >/dev/null 2>&1
-initctl stop takipi-statsd >/dev/null 2>&1
