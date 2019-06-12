@@ -11,8 +11,9 @@ packages:
 - name: overops_collector
   type: app
   manifest:
-    memory: 1G
-    buildpack: java_buildpack_offline
+    memory: 2G
+    disk_quota: 2G
+    buildpack: https://github.com/cloudfoundry/java-buildpack.git
     path: overops-collector.jar
     command: ./collector.sh
     routes:

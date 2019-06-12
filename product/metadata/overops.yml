@@ -5,7 +5,7 @@ label: OverOps Reliability Platform
 metadata_version: '1.8'
 minimum_version_for_upgrade: 0.0.1
 name: overops
-product_version: 0.0.4
+product_version: 0.0.5
 rank: 1
 requires_product_versions:
 - name: cf
@@ -16,9 +16,9 @@ standalone: false
 
 
 releases:
-- file: overops-0.0.4.tgz
+- file: overops-0.0.5.tgz
   name: overops
-  version: '0.0.4'
+  version: '0.0.5'
 - file: cf-cli-1.16.0.tgz
   name: cf-cli
   version: '1.16.0'
@@ -129,9 +129,10 @@ job_types:
     org: (( .properties.org.value ))
     overops_collector:
       app_manifest:
-        buildpack: java_buildpack_offline
+        buildpack: https://github.com/cloudfoundry/java-buildpack.git
         command: ./collector.sh
-        memory: 1G
+        disk_quota: 2G
+        memory: 2G
         org: (( .properties.overops_org.value ))
         path: overops-collector.jar
         routes:
@@ -210,9 +211,10 @@ job_types:
     org: (( .properties.org.value ))
     overops_collector:
       app_manifest:
-        buildpack: java_buildpack_offline
+        buildpack: https://github.com/cloudfoundry/java-buildpack.git
         command: ./collector.sh
-        memory: 1G
+        disk_quota: 2G
+        memory: 2G
         org: (( .properties.overops_org.value ))
         path: overops-collector.jar
         routes:
@@ -286,4 +288,4 @@ update:
 
 provides_product_versions:
 - name: overops
-  version: '0.0.4'
+  version: '0.0.5'
