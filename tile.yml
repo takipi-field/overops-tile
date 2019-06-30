@@ -6,8 +6,7 @@ name: overops
 icon_file: resources/OverOps.png
 label: OverOps Reliability Platform
 description: This Tile provides all compononents of the OverOps reliability platform. Identify and resolve critical errors with continuous code analysis and machine learning across your software delivery lifecycle.
-org: ((.properties.overops_org.value ))
-space: ((.properties.overops_space.value))
+
 # metadata_version: 1.8                 # Optional, defaults to 1.8
 packages:
 - name: overops_collector
@@ -17,24 +16,26 @@ packages:
     buildpack: https://github.com/cloudfoundry/java-buildpack.git
     path: overops-collector.jar
     health-check-type: process
+    no-route: true
     stemcell: default
-    services:
-      - takipi_collector
+    #org: ((.properties.overops_org.value ))
+    #space: ((.properties.overops_space.value))
     command: |
-      export TAKIPI_LISTEN_PORT=$PORT
-      export TAKIPI_SERVER_NAME=$(echo $VCAP_APPLICATION | jq -r '.name')$INSTANCE_INDEX
-      tar -xzvf takipi-4.37.7.tar.gz
-      sed -i "s @TAKIPI_BACKEND@ $TAKIPI_BASE_URL g" collector.properties
+      tar -xzvf takipi-4.38.0.tar.gz
       cp collector.properties takipi
       nohup takipi/bin/takipi-service -l &
-    post_deploy: |
-      cf create-shared-domain tcp.((.properties.takipi_base_url.value)) --router-group default-tcp      
-      cf unmap-route ((.properties.overops_org.value)) ((.properties.overops_tcp_route.value))
-      cf rename-org overops-org (( .properties.overops_org.value)) 
-      cf rename overops-space (( .properties.overops_space.value))
-      cf set-quota default ((.properties.overops_org.value))
-      cf update-quota default --reserved-route-ports 10
-      cf map-route overops_collector ((.properties.overops_tcp_route.value)) --random-port
+    env:
+      TAKIPI_LISTEN_PORT: 8080
+      libraryPath: /home/vcap/app/takipi/lib
+      JVM_LIB_FILE: /home/vcap/app/.java-buildpack/open_jdk_jre/lib/amd64/server/libjvm.so
+#    post_deploy: |
+#      cf create-shared-domain tcp.((.properties.takipi_base_url.value)) --router-group default-tcp      
+#      cf unmap-route ((.properties.overops_org.value)) ((.properties.overops_tcp_route.value))
+#      cf rename-org overops-org (( .properties.overops_org.value)) 
+#      cf rename overops-space (( .properties.overops_space.value))
+#      cf set-quota default ((.properties.overops_org.value))
+#      cf update-quota default --reserved-route-ports 10
+#      cf map-route overops_collector ((.properties.overops_tcp_route.value)) --random-port
 
 forms:
 - name: collector-form1
@@ -43,15 +44,18 @@ forms:
   - name: takipi_base_url
     type: string
     label: Backend Url
-  - name: overops_secret_key
+  - name: takipi_secret_key
     type: secret
-    label: Secret Key
-  - name: overops_tcp_route
+    label: Overops Secret Key
+#  - name: overops_tcp_route
+#    type: string
+#    label: TCP Route
+  - name: takipi_server_name
     type: string
-    label: TCP Route
-  - name: overops_org
-    type: string
-    label: Org 
-  - name: overops_space
-    type: string
-    label: Space
+    label: Overops Server Name
+#  - name: overops_org
+#    type: string
+#    label: Org 
+#  - name: overops_space
+#    type: string
+#    label: Space

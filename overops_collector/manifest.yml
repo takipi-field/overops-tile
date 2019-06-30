@@ -6,9 +6,4 @@ applications:
   memory: 1G
   random-route: true
   path: app
-  env:  
-    TAKIPI_BASE_URL: https://backend.overops.com/
-    TAKIPI_SECRET_KEY: S38797#0IBkissqY8b2aweQ#1vFP55KxTDmFqfaS3yD6haEKWdqfYgRGbNSuh17zD9c=#b1ae
   command: ./collector.sh
-  routes:
-  - route: tcp.palmsprings.cf-app.com
