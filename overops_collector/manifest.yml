@@ -6,4 +6,3 @@ applications:
   memory: 1G
   random-route: true
   path: app
-#  command: ./collector.sh

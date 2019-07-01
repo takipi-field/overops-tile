@@ -17,8 +17,6 @@ packages:
     health-check-type: process
     no-route: true
     stemcell: default
-    #org: ((.properties.overops_org.value ))
-    #space: ((.properties.overops_space.value))
     command: |
       tar -xzvf takipi-4.38.0.tar.gz
       cp collector.properties takipi
@@ -46,15 +44,6 @@ forms:
   - name: takipi_secret_key
     type: secret
     label: Overops Secret Key
-#  - name: overops_tcp_route
-#    type: string
-#    label: TCP Route
   - name: takipi_server_name
     type: string
     label: Overops Server Name
-  - name: overops_org
-    type: string
-    label: Org 
-  - name: overops_space
-    type: string
-    label: Space
