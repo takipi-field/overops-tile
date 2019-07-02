@@ -31,7 +31,7 @@ forms:
   properties:
   - name: takipi_base_url
     type: string
-    label: Backend Url
+    label: OverOps Backend Url
   - name: takipi_secret_key
     type: secret
     label: OverOps Secret Key
