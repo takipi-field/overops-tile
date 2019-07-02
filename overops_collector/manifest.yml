@@ -1,8 +1,0 @@
----
-applications:
-- name: overops-collector
-  buildpacks:
-    - binary_buildpack
-  memory: 1G
-  random-route: true
-  path: app
