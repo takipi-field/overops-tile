@@ -19,7 +19,6 @@ packages:
     stemcell: default
     command: |
       tar -xzvf takipi-4.38.0.tar.gz
-      cp collector.properties takipi
       export TAKIPI_LISTEN_PORT=$PORT
       nohup takipi/bin/takipi-service -l &
     env:
