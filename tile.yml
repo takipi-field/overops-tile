@@ -24,14 +24,6 @@ packages:
     env:
       libraryPath: /home/vcap/app/takipi/lib
       JVM_LIB_FILE: /home/vcap/app/.java-buildpack/open_jdk_jre/lib/amd64/server/libjvm.so
-#    post_deploy: |
-#      cf create-shared-domain tcp.((.properties.takipi_base_url.value)) --router-group default-tcp      
-#      cf unmap-route ((.properties.overops_org.value)) ((.properties.overops_tcp_route.value))
-#      cf rename-org overops-org (( .properties.overops_org.value)) 
-#      cf rename overops-space (( .properties.overops_space.value))
-#      cf set-quota default ((.properties.overops_org.value))
-#      cf update-quota default --reserved-route-ports 10
-#      cf map-route overops_collector ((.properties.overops_tcp_route.value)) --random-port
 
 forms:
 - name: collector-form1
