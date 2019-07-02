@@ -20,9 +20,9 @@ packages:
     command: |
       tar -xzvf takipi-4.38.0.tar.gz
       cp collector.properties takipi
+      export TAKIPI_LISTEN_PORT=$PORT
       nohup takipi/bin/takipi-service -l &
     env:
-      TAKIPI_LISTEN_PORT: 8080
       libraryPath: /home/vcap/app/takipi/lib
       JVM_LIB_FILE: /home/vcap/app/.java-buildpack/open_jdk_jre/lib/amd64/server/libjvm.so
 #    post_deploy: |
