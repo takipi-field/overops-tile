@@ -34,7 +34,7 @@ forms:
     label: Backend Url
   - name: takipi_secret_key
     type: secret
-    label: Overops Secret Key
+    label: OverOps Secret Key
   - name: takipi_server_name
     type: string
-    label: Overops Server Name
+    label: OverOps Server Name
