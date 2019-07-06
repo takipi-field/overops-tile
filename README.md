@@ -9,11 +9,12 @@ Also make sure to have TCP communication enabled, this means having a default-tc
 1. Clone [overops-tile](https://github.com/takipi-field/overops-tile) and get the `product/overops-collector-version_#.pivotal` file and upload it through the Ops Manager in cloud foundry. 
 2. In Ops Manager click `Import Product` and select the .pivotal you downloaded
 3. Click the `+` sign below the Import button to add the changes to your Tile.
-4. The OverOps Reliability Platform Tile should have an orange color specifying that there are form values that need to entered. Enter the proper form values needed to make the tile turn green.  
-5. Once the form has been fully filled out click `apply changes` and select the Tiles you are using and let it deploy.   
-6. (If there is a TCP enabled Domain already skip this step)Create a TCP domain `cf create-shared-domain tcp.example.com --router-goups default-tcp` 7. After the changes have been deployed, please go to your OverOps Collector in overops-org and overops-space. Map a TCP route to your application, `cf map-route app_name tcp.hostname_ex.com --random-port`. This is mapping a tcp route and selecting a random port `--port` can be used to select a specific port.
-7. Deploy your application to the same environment and provide a service that passed in two properties. `collector_host` and `collector_port`. Ex `cf cups overops-service -t "takipi" -p '{"collector_host":"tcp.hostname_ex.com", "collector_port":"1234"}`
-8. After service has been made bind it to your application. `cf bind-service app_name takipi-service` and then restage your application `cf restage app_name`. Once the app has deployed please check app.overops.com and make sure OverOps is functioning properly. 
+4. The OverOps Reliability Platform Tile should have an orange color specifying that there are form values that need to entered. Enter the proper form values needed to make the tile turn green. 
+5. If needed please download a stemcell from [Stemcells](https://bosh.cloudfoundry.org/stemcells/), the Ubuntu Xenial 315 is the stemcell used during development and submit it to the OverOps Tile. 
+6. Once the form has been fully filled out click `apply changes` and select the Tiles you are using and let it deploy.   
+7. (If there is a TCP enabled Domain already skip this step)Create a TCP domain `cf create-shared-domain tcp.example.com --router-goups default-tcp` 7. After the changes have been deployed, please go to your OverOps Collector in overops-org and overops-space. Map a TCP route to your application, `cf map-route app_name tcp.hostname_ex.com --random-port`. This is mapping a tcp route and selecting a random port `--port` can be used to select a specific port.
+8. Deploy your application to the same environment and provide a service that passed in two properties. `collector_host` and `collector_port`. Ex `cf cups overops-service -t "takipi" -p '{"collector_host":"tcp.hostname_ex.com", "collector_port":"1234"}`
+9. After service has been made bind it to your application. `cf bind-service app_name takipi-service` and then restage your application `cf restage app_name`. Once the app has deployed please check app.overops.com and make sure OverOps is functioning properly. 
 
 ## Common Problems
 - If you are having problems using TCP communication please refer to https://docs.pivotal.io/pivotalcf/2-5/adminguide/enabling-tcp-routing.html
