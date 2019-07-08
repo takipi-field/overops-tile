@@ -15,6 +15,7 @@ packages:
     buildpack: https://github.com/cloudfoundry/java-buildpack.git
     path: overops-collector.jar
     health-check-type: process
+    disk_quota: 2G
     no-route: true
     stemcell: default
     command: |
@@ -24,7 +25,8 @@ packages:
     env:
       libraryPath: /home/vcap/app/takipi/lib
       JVM_LIB_FILE: /home/vcap/app/.java-buildpack/open_jdk_jre/lib/amd64/server/libjvm.so
-
+      CF_ORG: (( .properties.cf_org.value ))
+      CF_SPACE: ((.properties.cf_space.value ))
 forms:
 - name: collector-form1
   label: OverOps Collector
@@ -38,3 +40,9 @@ forms:
   - name: takipi_server_name
     type: string
     label: OverOps Server Name
+  - name: cf_org
+    type: string
+    label: Deployment Organization
+  - name: cf_space
+    type: string
+    label: Deployment Space
