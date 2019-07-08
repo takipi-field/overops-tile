@@ -171,7 +171,9 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
     rm -r tmp
     ```
 
-1. Update the version in `tile.yml`
+1. Update the version in `tile.yml`.
+
+1. If the new Collector requires changes to environment variables, change them in `tile.yml`.
 
 ## Building the Tile
 
