@@ -113,37 +113,39 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
 
 1. Map a TCP route to your application with a random port, or specify a port with `--port`:
 
-  ```sh
-  cf map-route my_app tcp.example.com --random-port
-  ```
+     ```sh
+     cf map-route my_app tcp.example.com --random-port
+     ```
 
 1. Create a user defined service to set `collector_host` and `collector_port` and tag with `takipi` to enable the Agent:
 
-  ```sh
-  cf cups overops-service -t "takipi" -p '{"collector_host":"tcp.example.com", "collector_port":"1234"}'`
-  ```
+     ```sh
+     cf cups overops-service -t "takipi" -p '{"collector_host":"tcp.example.com", "collector_port":"1234"}'`
+     ```
 
 1. Bind the service to your application:
 
-  ```sh
-  cf bind-service my_app overops-service
-  ```
+     ```sh
+     cf bind-service my_app overops-service
+     ```
 
 1. Restage your application:
 
-  ```sh
-  cf restage my_app
-  ```
+     ```sh
+     cf restage my_app
+     ```
 
 1. Confirm connectivity with the backend by going to [https://app.overops.com/](https://app.overops.com).
 
 ## Building the Tile
 
-TODO
+To build the tile (`.pivotal` file) from `tile.yml`, run:
 
 ```sh
 tile build
 ```
+
+Version number is incremented based on `tile-history.yml`.
 
 ## SSH into a running tile
 
