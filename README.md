@@ -105,7 +105,7 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
 
 1. The OverOps Reliability Platform tile should have an orange color specifying that there are form values that need to entered. Enter the proper form values needed to make the tile turn green.
 
-1. If the stemcell is missing, [download the latest Ubuntu Xenial 315 stemcell](https://bosh.cloudfoundry.org/stemcells/) for your platform from BOSH and upload it in the Ops Manager.
+1. If the Stemcell is missing, [download the latest Ubuntu Xenial 315 Stemcell](https://bosh.cloudfoundry.org/stemcells/) for your platform from BOSH and upload it in the Ops Manager. Either the Light Stemcell or the Full Stemcell will work.
 
 1. Once the form has been fully filled out click **Review Pending Changes** ensure the tile is selected and click **Apply Changes**.
 
@@ -147,40 +147,40 @@ tile build
 
 Version number is incremented based on `tile-history.yml`.
 
-## SSH into a running tile
-
-TODO
-
 ## Useful Commands
-+ [Cheat Sheet for Cf Commands](https://blog.anynines.com/cloud-foundry-command-line-cheat-sheet/)
 
-+ ```cf ssh app_name``` to do this command please make sure you have ssh enabled in your container. to enable ssh ```cf enable-ssh app_name```
-++ ```cf space-quotas```
-+ ```cf create-quota QUOTA [-m TOTAL-MEMORY] [-i INSTANCE-MEMORY] [-r ROUTES] [-s SERVICE-INSTANCES] [--allow-paid-service-plans] ```
-+ ```cf cups service_name -t "takipi" -p '{"collector_host":"tcp_domain", "collector_port":"port_to_app"}'``` create a service that will activate the takipi agent inside of the java buildpack
-+```cf uups service_name -t "takipi" -p '{"collector_host":"tcp_domain", "collector_port":"port_to_app"}'``` updated the current service
-+ ``` cf target -o org_name -s space_name ```
+* [Cheat Sheet for Cf Commands](https://blog.anynines.com/cloud-foundry-command-line-cheat-sheet/)
 
-## Common Problems
+* Enable SSH
 
-* If you are having problems using TCP communication please refer to https://docs.pivotal.io/pivotalcf/2-5/adminguide/enabling-tcp-routing.html
+  ```sh
+  cf enable-ssh app_name
+  ```
 
-* On every environment the TCP port ranges vary. GCP has a range of 1024-1123. Please refer to your environments provider for the correct port ranges to specify on your environment.
+* SSH into a running tile
 
-* This collector deploys using `stdout` to write logs. The UI logs section will show the collector logs
+  ```sh
+  cf ssh app_name
+  ```
 
-* To see the agent logs please `cf ssh app_name` and go to `app/.java-buildpack/takipi-agent/logs/agents` and check the `bug` log. If the correct credentials have been passed to the Agent please make sure the route to the collector is correct. Otherwise please refer to the environment settings and make sure the TCP port is in range and that the domain is properly using `default-tcp`
+* Update user defined service
 
-* **Missing Stemcell**? Download the latest BOSH [stemcell](https://bosh.cloudfoundry.org/stemcells/bosh-aws-xen-hvm-ubuntu-xenial-go_agent) for your environment. See [Stemcell (Linux) Release Notes](https://docs.pivotal.io/pivotalcf/2-6/stemcells/stemcells.html#315-line). Tile v0.9.6 requires `ubuntu-xenial` version `315`. (light version is ok).
+    ```sh
+    cf uups overops-service -t "takipi" -p '{"collector_host":"tcp_domain", "collector_port":"port_to_app"}'
+    ```
 
-## Common Problems
-- If you are having problems using TCP communication please refer to https://docs.pivotal.io/pivotalcf/2-5/adminguide/enabling-tcp-routing.html
-- On every environment the TCP port ranges vary. GCP has a range of 1024-1123. Please refer to your environments provider for the correct port ranges to specify on your environment. 
-- This collector sends all logs to stdout. The UI logs section will show the collector logs
+## Troubleshooting Common Problems
 
-## Troubleshooting
--To see the agent logs, ssh into your app and do ```cd app/.java-buildpack/takipi-agent/logs/agents``` and look at the ```bug``` log.
-- To see the collector logs, please check stdout in the Apps Manager UI console of your application. 
-- Double check to make sure that routes section is not set to 0. To check ```cf quotas``` 
-- Check that there are reservable ports in your quota. Ex update ```default``` quota ```cf update-quota default --reserved-route-ports 20```
-To see the agent logs please ssh into your app and go to `app/.java-buildpack/takipi-agent/logs/agents` and check the `bug` log. If the correct credentials have been passed to the Agent please make sure the route to the collector is correct. Otherwise please refer to the environment settings and make sure the TCP port is in range and that the domain is properly using ```default-tcp```
+* TCP port ranges vary based on the underlying IaaS provider. GCP has a range of 1024-1123. Please refer to your environment's provider for the correct port ranges to specify on your environment.
+
+* This Collector deploys using `stdout` to write logs. The UI logs section will show the Collector logs.
+
+* To see the Agent logs, SSH into your app and go to `app/.java-buildpack/takipi-agent/logs/agents` and check the logs.
+
+* Make sure that routes section is not set to 0. To check run `cf quotas`
+
+* Check that there are reservable ports in your quota. For example, to update the `default` quota to 20:
+
+    ```sh
+    cf update-quota default --reserved-route-ports 20
+    ```
