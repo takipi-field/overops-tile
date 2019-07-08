@@ -31,7 +31,12 @@ To check do this `cf router-groups`. If it does not pop up please refer to [TCP 
 + ```cf cups service_name -t "takipi" -p '{"collector_host":"tcp_domain", "collector_port":"port_to_app"}'``` create a service that will activate the takipi agent inside of the java buildpack
 + ``` cf target -o org_name -s space_name ```
 
-- To see the agent logs please ssh into your app and go to `app/.java-buildpack/takipi-agent/logs/agents` and check the `bug` log. If the correct credentials have been passed to the Agent please make sure the route to the collector is correct. Otherwise please refer to the environment settings and make sure the TCP port is in range and that the domain is properly using `default-tcp`
+## Troubleshooting
+-To see the agent logs, ssh into your app and do ```cd app/.java-buildpack/takipi-agent/logs/agents``` and look at the ```bug``` log.
+- To see the collector logs, please check stdout in the Apps Manager UI console of your application. 
+- Double check to make sure that routes section is not set to 0. To check ```cf quotas``` 
+- Check that there are reservable ports in your quota. Ex update ```default``` quota ```cf update-quota default --reserved-route-ports 20```
+To see the agent logs please ssh into your app and go to `app/.java-buildpack/takipi-agent/logs/agents` and check the `bug` log. If the correct credentials have been passed to the Agent please make sure the route to the collector is correct. Otherwise please refer to the environment settings and make sure the TCP port is in range and that the domain is properly using ```default-tcp```
 
 
 
