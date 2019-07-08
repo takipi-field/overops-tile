@@ -23,12 +23,14 @@ To check do this `cf router-groups`. If it does not pop up please refer to [TCP 
 - This collector deploys using `stdout` to write logs. The UI logs section will show the collector logs
 
 ## Useful Commands
++ +[Cheat Sheet for Cf Commands](https://blog.anynines.com/cloud-foundry-command-line-cheat-sheet/)
+
 + ```cf ssh app_name```
 + ```cf create-quota QUOTA [-m TOTAL-MEMORY] [-i INSTANCE-MEMORY] [-r ROUTES] [-s SERVICE-INSTANCES] [--allow-paid-service-plans] ```
 + ```cf space-quotas```
 + ```cf cups service_name -t "takipi" -p '{"collector_host":"tcp_domain", "collector_port":"port_to_app"}'``` create a service that will activate the takipi agent inside of the java buildpack
 + ``` cf target -o org_name -s space_name ```
-[Cheat Sheet for Cf Commands](https://blog.anynines.com/cloud-foundry-command-line-cheat-sheet/)
+
 - To see the agent logs please ssh into your app and go to `app/.java-buildpack/takipi-agent/logs/agents` and check the `bug` log. If the correct credentials have been passed to the Agent please make sure the route to the collector is correct. Otherwise please refer to the environment settings and make sure the TCP port is in range and that the domain is properly using `default-tcp`
 
 
