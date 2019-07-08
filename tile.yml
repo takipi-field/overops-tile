@@ -11,6 +11,7 @@ packages:
     buildpack: https://github.com/cloudfoundry/java-buildpack.git
     memory: 2G
     disk_quota: 2G
+    no-route: true
     stemcell: default
     command: |
       tar xzvf takipi-4.38.0.tar.gz
