@@ -147,6 +147,42 @@ tile build
 
 Version number is incremented based on `tile-history.yml`.
 
+## Upgrading the Collector
+
+1. Download the [latest Collector](https://app.overops.com/app/download?t=tgz)
+
+1. Move `overops-collector.jar` to a temporary folder
+
+    ```sh
+    mkdir tmp
+    mv overops-collector.jar tmp
+    ```
+
+1. Extract the jar
+
+    ```sh
+    jar xf overops-collector.jar
+    rm overops-collector.jar
+    ```
+
+1. Replace the Collector
+
+1. Create a new jar
+
+    ```sh
+    jar cMvf overops-collector.jar *
+    ```
+
+1. Replace the jar
+
+    ```sh
+    mv overops-collector.jar ..
+    cd ..
+    rm -r tmp
+    ```
+
+1. Update the version in `tile.yml`
+
 ## Useful Commands
 
 * [Cheat Sheet for CF Commands](https://blog.anynines.com/cloud-foundry-command-line-cheat-sheet/)
@@ -170,6 +206,8 @@ Version number is incremented based on `tile-history.yml`.
     ```sh
     cf uups overops-service -t "takipi" -p '{"collector_host":"tcp_domain", "collector_port":"port_to_app"}'
     ```
+
+* Need a sample app? Use [Spring Music](https://github.com/cloudfoundry-samples/spring-music)
 
 ## Troubleshooting Common Problems
 
