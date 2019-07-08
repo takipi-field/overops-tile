@@ -4,7 +4,8 @@ This repository is the Tile used in Pivotal Cloud Foundry, please find below the
 
 ## Pre-Requisites 
 In your app please make sure to have the [Java Buildpack](https://github.com/cloudfoundry/java-buildpack) or the [Java Offline Buildpack](https://docs.pivotal.io/pivotalcf/2-4/buildpacks/java/index.html). 
-Also make sure to have TCP communication enabled, this means having a default-tcp router group. Double check is to see if there is the `default-tcp` router group. To check do this `cf router-groups`. If it does not pop up please refer to [TCP Routing](https://docs.cloudfoundry.org/adminguide/enabling-tcp-routing.html)
+Also make sure to have TCP communication enabled, this means having a default-tcp router group. Double check is to see if there is the `default-tcp` router group. 
+To check do this `cf router-groups`. If it does not pop up please refer to [TCP Routing](https://docs.cloudfoundry.org/adminguide/enabling-tcp-routing.html)
 ## Setup
 1. Clone [overops-tile](https://github.com/takipi-field/overops-tile) and get the `product/overops-collector-version_#.pivotal` file and upload it through the Ops Manager in cloud foundry. 
 2. In Ops Manager click `Import Product` and select the .pivotal you downloaded
@@ -20,7 +21,15 @@ Also make sure to have TCP communication enabled, this means having a default-tc
 - If you are having problems using TCP communication please refer to https://docs.pivotal.io/pivotalcf/2-5/adminguide/enabling-tcp-routing.html
 - On every environment the TCP port ranges vary. GCP has a range of 1024-1123. Please refer to your environments provider for the correct port ranges to specify on your environment. 
 - This collector deploys using `stdout` to write logs. The UI logs section will show the collector logs
-- To see the agent logs please `cf ssh app_name` and go to `app/.java-buildpack/takipi-agent/logs/agents` and check the `bug` log. If the correct credentials have been passed to the Agent please make sure the route to the collector is correct. Otherwise please refer to the environment settings and make sure the TCP port is in range and that the domain is properly using `default-tcp`
+
+## Useful Commands
++ ```cf ssh app_name```
++ ```cf create-quota QUOTA [-m TOTAL-MEMORY] [-i INSTANCE-MEMORY] [-r ROUTES] [-s SERVICE-INSTANCES] [--allow-paid-service-plans] ```
++ ```cf space-quotas```
++ ```cf cups service_name -t "takipi" -p '{"collector_host":"tcp_domain", "collector_port":"port_to_app"}'``` create a service that will activate the takipi agent inside of the java buildpack
++ ``` cf target -o org_name -s space_name ```
+[Cheat Sheet for Cf Commands](https://blog.anynines.com/cloud-foundry-command-line-cheat-sheet/)
+- To see the agent logs please ssh into your app and go to `app/.java-buildpack/takipi-agent/logs/agents` and check the `bug` log. If the correct credentials have been passed to the Agent please make sure the route to the collector is correct. Otherwise please refer to the environment settings and make sure the TCP port is in range and that the domain is properly using `default-tcp`
 
 
 
