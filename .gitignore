@@ -1,2 +1,6 @@
-release/
 .DS_Store
+release/
+product/metadata/
+product/migrations/
+product/releases/
+product/tile-generator/

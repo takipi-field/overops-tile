@@ -1,48 +1,40 @@
 ---
-# The high-level description of your tile.
-# Replace these properties with real values.
-#
 name: overops
 icon_file: resources/OverOps.png
-label: OverOps Reliability Platform
-description: This Tile provides all compononents of the OverOps reliability platform. Identify and resolve critical errors with continuous code analysis and machine learning across your software delivery lifecycle.
-# metadata_version: 1.8                 # Optional, defaults to 1.8
+label: OverOps Reliability Platform for PCF
+description: This Tile provides all components of the OverOps Reliability Platform for PCF. Identify and resolve critical errors with continuous code analysis and machine learning across your software delivery life cycle.
 packages:
 - name: overops_collector
   type: app
+  health_check: none
   manifest:
-    memory: 2G
     buildpack: https://github.com/cloudfoundry/java-buildpack.git
-    path: overops-collector.jar
-    health-check-type: process
+    memory: 2G
     disk_quota: 2G
-    no-route: true
     stemcell: default
     command: |
-      tar -xzvf takipi-4.38.0.tar.gz
+      tar xzvf takipi-4.38.0.tar.gz
       export TAKIPI_LISTEN_PORT=$PORT
       nohup takipi/bin/takipi-service -l &
+    path: overops-collector.jar
     env:
-      libraryPath: /home/vcap/app/takipi/lib
       JVM_LIB_FILE: /home/vcap/app/.java-buildpack/open_jdk_jre/lib/amd64/server/libjvm.so
-      CF_ORG: (( .properties.cf_org.value ))
-      CF_SPACE: ((.properties.cf_space.value ))
 forms:
 - name: collector-form1
   label: OverOps Collector
   properties:
   - name: takipi_base_url
     type: string
-    label: OverOps Backend Url
+    label: OverOps Backend URL
   - name: takipi_secret_key
     type: secret
-    label: OverOps Secret Key
+    label: OverOps Installation Key
   - name: takipi_server_name
     type: string
-    label: OverOps Server Name
+    label: Server Name
   - name: cf_org
     type: string
-    label: Deployment Organization
+    label: Org
   - name: cf_space
     type: string
-    label: Deployment Space
+    label: Space
