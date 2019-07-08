@@ -25,12 +25,12 @@ To check do this ```cf router-groups```. If it does not pop up please refer to [
 ## Useful Commands
 + [Cheat Sheet for Cf Commands](https://blog.anynines.com/cloud-foundry-command-line-cheat-sheet/)
 
-+ ```cf ssh app_name```
++ ```cf ssh app_name``` to do this command please make sure you have ssh enabled in your container. to enable ssh ```cf enable-ssh app_name```
+++ ```cf space-quotas```
 + ```cf create-quota QUOTA [-m TOTAL-MEMORY] [-i INSTANCE-MEMORY] [-r ROUTES] [-s SERVICE-INSTANCES] [--allow-paid-service-plans] ```
-+ ```cf space-quotas```
 + ```cf cups service_name -t "takipi" -p '{"collector_host":"tcp_domain", "collector_port":"port_to_app"}'``` create a service that will activate the takipi agent inside of the java buildpack
++```cf uups service_name -t "takipi" -p '{"collector_host":"tcp_domain", "collector_port":"port_to_app"}'``` updated the current service
 + ``` cf target -o org_name -s space_name ```
-
 ## Troubleshooting
 -To see the agent logs, ssh into your app and do ```cd app/.java-buildpack/takipi-agent/logs/agents``` and look at the ```bug``` log.
 - To see the collector logs, please check stdout in the Apps Manager UI console of your application. 
