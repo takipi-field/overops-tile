@@ -1,48 +1,41 @@
 ---
-# The high-level description of your tile.
-# Replace these properties with real values.
-#
 name: overops
 icon_file: resources/OverOps.png
-label: OverOps Reliability Platform
-description: This Tile provides all compononents of the OverOps reliability platform. Identify and resolve critical errors with continuous code analysis and machine learning across your software delivery lifecycle.
-# metadata_version: 1.8                 # Optional, defaults to 1.8
+label: OverOps Reliability Platform for PCF
+description: This Tile provides all components of the OverOps Reliability Platform for PCF. Identify and resolve critical errors with continuous code analysis and machine learning across your software delivery life cycle.
 packages:
 - name: overops_collector
   type: app
+  health_check: none
   manifest:
+    buildpack: https://github.com/cloudfoundry/java-buildpack.git
     memory: 2G
     disk_quota: 2G
-    buildpack: java_buildpack_offline
+    no-route: true
+    stemcell: default
+    command: |
+      tar xzvf takipi-4.38.0.tar.gz
+      export TAKIPI_LISTEN_PORT=$PORT
+      nohup takipi/bin/takipi-service -l &
     path: overops-collector.jar
-    command: ./collector.sh
-    routes:
-      - route: (( .properties.overops_tcp_route.value ))
-    org: (( .properties.overops_org.value ))
-    space: (( .properties.overops_space.value ))
+    env:
+      JVM_LIB_FILE: /home/vcap/app/.java-buildpack/open_jdk_jre/lib/amd64/server/libjvm.so
 forms:
 - name: collector-form1
   label: OverOps Collector
   properties:
   - name: takipi_base_url
     type: string
-    label: Backend Url
+    label: OverOps Backend URL
   - name: takipi_secret_key
     type: secret
-    label: Secret Key
-  - name: overops_tcp_route
+    label: OverOps Installation Key
+  - name: takipi_server_name
     type: string
-    label: TCP Route
-  - name: overops_org
+    label: Server Name
+  - name: cf_org
     type: string
-    label: Org 
-  - name: overops_space
+    label: Org
+  - name: cf_space
     type: string
     label: Space
-- name: server-form1
-  label: OverOps Server
-  properties:
-  - name: install_server
-    type: boolean
-    optional: true
-    label: Install On-Premise OverOps Server
