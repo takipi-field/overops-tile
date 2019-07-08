@@ -93,7 +93,7 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
   cf target -o my-org -s my-space
   ```
 
-* Use the [Java Buildpack](https://github.com/cloudfoundry/java-buildpack) or the [Java Offline Buildpack](https://docs.pivotal.io/pivotalcf/2-6/buildpacks/java/index.html) for your app. The Java Buildpack contains the [Takipi Agent Framework](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/framework-takipi_agent.md). Apply the tag `takipi` to enable the Agent.
+* Use the [Java Buildpack](https://github.com/cloudfoundry/java-buildpack) for your app. The Java Buildpack contains the [Takipi Agent Framework](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/framework-takipi_agent.md). Apply the tag `takipi` to enable the Agent.
 
 ## Installing the Tile
 
@@ -111,7 +111,7 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
 
 1. After the changes have been deployed, the OverOps Collector will be in the Org and Space entered during configuration.
 
-1. Map a TCP route to the Collector with a random port, or specify a port with `--port`. Note app name will contain version number, e.g. `overops-collector-0.9.15`.
+1. Map a TCP route to the Collector with a random port, or specify a port with `--port`. Note app name will contain version number, e.g. `overops-collector-0.9.1`.
 
      ```sh
      cf map-route overops-collector tcp.example.com --random-port
