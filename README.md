@@ -149,7 +149,8 @@ Version number is incremented based on `tile-history.yml`.
 
 ## Useful Commands
 
-* [Cheat Sheet for Cf Commands](https://blog.anynines.com/cloud-foundry-command-line-cheat-sheet/)
+* [Cheat Sheet for CF Commands](https://blog.anynines.com/cloud-foundry-command-line-cheat-sheet/)
+    * [Cheet Sheet PDF](readme/a9s-CF-Cheat-Sheet.pdf)
 
 * Enable SSH
 
