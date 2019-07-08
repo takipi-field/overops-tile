@@ -137,16 +137,6 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
 
 1. Confirm connectivity with the backend by going to [https://app.overops.com/](https://app.overops.com).
 
-## Building the Tile
-
-To build the tile (`.pivotal` file) from `tile.yml`, run:
-
-```sh
-tile build
-```
-
-Version number is incremented based on `tile-history.yml`.
-
 ## Upgrading the Collector
 
 1. Download the [latest Collector](https://app.overops.com/app/download?t=tgz)
@@ -182,6 +172,16 @@ Version number is incremented based on `tile-history.yml`.
     ```
 
 1. Update the version in `tile.yml`
+
+## Building the Tile
+
+To build the tile (`.pivotal` file) from `tile.yml`, run:
+
+```sh
+tile build
+```
+
+Version number is incremented based on `tile-history.yml`.
 
 ## Useful Commands
 
