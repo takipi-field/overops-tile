@@ -1,10 +1,12 @@
 # OverOps Tile for Pivotal Cloud Foundry (PCF)
 
-This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF), please find below the steps required to use this tile.
+This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF), please find below the steps required to build and use the tile.
 
 ## Prerequisites
 
-* *TODO* Install `cf` and `tile` commands.
+* [Install the `cf` CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
+
+* If building the tile, [Install the Tile Generator](https://docs.pivotal.io/tiledev/2-6/tile-generator.html#how-to)
 
 * [Log in to Cloud Foundry](https://docs.cloudfoundry.org/cf-cli/getting-started.html)
 
@@ -91,27 +93,49 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
   cf target -o my-org -s my-space
   ```
 
-* Use the [Java Buildpack](https://github.com/cloudfoundry/java-buildpack) or the [Java Offline Buildpack](https://docs.pivotal.io/pivotalcf/2-4/buildpacks/java/index.html) for your app. The Java Buildpack contains the [Takipi Agent Framework](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/framework-takipi_agent.md). Apply the tag `takipi` to enable the Agent.
+* Use the [Java Buildpack](https://github.com/cloudfoundry/java-buildpack) or the [Java Offline Buildpack](https://docs.pivotal.io/pivotalcf/2-6/buildpacks/java/index.html) for your app. The Java Buildpack contains the [Takipi Agent Framework](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/framework-takipi_agent.md). Apply the tag `takipi` to enable the Agent.
 
-## Installing
+## Installing the Tile
 
 1. Download the [latest release](https://github.com/takipi-field/overops-tile/releases) `.pivotal` file.
 
-2. In Ops Manager click **Import a Product** and select the `.pivotal` file you downloaded.
+1. In Ops Manager click **Import a Product** and select the `.pivotal` file you downloaded.
 
-3. Click the **+** sign under OverOps Reliability Platform to add the tile.
+1. Click the **+** sign under OverOps Reliability Platform to add the tile.
 
-4. The OverOps Reliability Platform tile should have an orange color specifying that there are form values that need to entered. Enter the proper form values needed to make the tile turn green.
+1. The OverOps Reliability Platform tile should have an orange color specifying that there are form values that need to entered. Enter the proper form values needed to make the tile turn green.
 
-5. If needed please download a stemcell from [Stemcells](https://bosh.cloudfoundry.org/stemcells/), the Ubuntu Xenial 315 is the stemcell used during development and submit it to the OverOps Tile.
+1. If the stemcell is missing, [download the latest Ubuntu Xenial 315 stemcell](https://bosh.cloudfoundry.org/stemcells/) for your platform from BOSH and upload it in the Ops Manager.
 
-6. Once the form has been fully filled out click **Review Pending Changes** ensure the tile is selected and click **Apply Changes**.
+1. Once the form has been fully filled out click **Review Pending Changes** ensure the tile is selected and click **Apply Changes**.
 
-7. After the changes have been deployed, go to the OverOps Collector in overops-org and overops-space. Map a TCP route to your application, `cf map-route app_name tcp.hostname_ex.com --random-port`. This is mapping a tcp route and selecting a random port `--port` can be used to select a specific port.
+1. After the changes have been deployed, the OverOps Collector will be in the Org and Space entered during configuration.
 
-8. Deploy your application to the same environment and provide a service that passed in two properties. `collector_host` and `collector_port`. Ex `cf cups overops-service -t "takipi" -p '{"collector_host":"tcp.hostname_ex.com", "collector_port":"1234"}`
+1. Map a TCP route to your application with a random port, or specify a port with `--port`:
 
-9. After service has been made bind it to your application. `cf bind-service app_name takipi-service` and then restage your application `cf restage app_name`. Once the app has deployed please check app.overops.com and make sure OverOps is functioning properly.
+  ```sh
+  cf map-route my_app tcp.example.com --random-port
+  ```
+
+1. Create a user defined service to set `collector_host` and `collector_port` and tag with `takipi` to enable the Agent:
+
+  ```sh
+  cf cups overops-service -t "takipi" -p '{"collector_host":"tcp.example.com", "collector_port":"1234"}'`
+  ```
+
+1. Bind the service to your application:
+
+  ```sh
+  cf bind-service my_app overops-service
+  ```
+
+1. Restage your application:
+
+  ```sh
+  cf restage my_app
+  ```
+
+1. Confirm connectivity with the backend by going to [https://app.overops.com/](https://app.overops.com).
 
 ## Building the Tile
 
