@@ -23,7 +23,7 @@ To check do this `cf router-groups`. If it does not pop up please refer to [TCP 
 - This collector deploys using `stdout` to write logs. The UI logs section will show the collector logs
 
 ## Useful Commands
-+ +[Cheat Sheet for Cf Commands](https://blog.anynines.com/cloud-foundry-command-line-cheat-sheet/)
++ [Cheat Sheet for Cf Commands](https://blog.anynines.com/cloud-foundry-command-line-cheat-sheet/)
 
 + ```cf ssh app_name```
 + ```cf create-quota QUOTA [-m TOTAL-MEMORY] [-i INSTANCE-MEMORY] [-r ROUTES] [-s SERVICE-INSTANCES] [--allow-paid-service-plans] ```
