@@ -14,36 +14,10 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
   cf login [-a API_URL] [-u USERNAME] [-p PASSWORD]
   ```
 
-* [Enable TCP Routing](https://docs.cloudfoundry.org/adminguide/enabling-tcp-routing.html). Confirm with:
+* Ensure that there is an `apps.internal` domain if one does not already exist:
 
   ```sh
-  $ cf router-groups
-
-  Getting router groups as admin ...
-
-  name          type
-  default-tcp   tcp
-  ```
-
-* Confirm a TCP shared domain exists:
-
-  ```sh
-  $ cf domains
-
-  Getting domains in org system as admin...
-  name                             status   type   details
-  apps.kabul.cf-app.com            shared
-  mesh.apps.kabul.cf-app.com       shared
-  apps.internal                    shared          internal
-  mesh.tcp.apps.kabul.cf-app.com   shared
-  tcp.kabul.cf-app.com             shared   tcp
-  sys.kabul.cf-app.com             owned
-  ```
-
-* Create a TCP shared domain if one does not already exist:
-
-  ```sh
-  cf create-shared-domain tcp.example.com --router-goups default-tcp
+  cf domains
   ```
 
 * Confirm an Org exists:
@@ -111,16 +85,21 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
 
 1. After the changes have been deployed, the OverOps Collector will be in the Org and Space entered during configuration.
 
-1. Map a TCP route to the Collector with a random port, or specify a port with `--port`. Note app name will contain version number, e.g. `overops-collector-0.9.1`.
+1. Map apps.internal route to the Collector with a hostname with `--hostname name`. Note app name will contain version number, e.g. `overops-collector-0.9.1`.
 
      ```sh
-     cf map-route overops-collector tcp.example.com --random-port
+     cf map-route overops-collector apps.internal --hostname collector
      ```
 
-1. Create a user defined service to set `collector_host` and `collector_port` and tag with `takipi` to enable the Agent:
+1. Add a network policy between the container to monitor and the collector. The source app is the application with the OverOps agent. 
+    ```sh
+    cf add-network-policy app_name --destination-app overops-collector --protocol tcp --port 8080
+    ```
+
+1. Create a user defined service to set `collector_host` and `collector_port`(default port that a container listens on is 8080) and tag with `takipi` to enable the Agent:
 
      ```sh
-     cf cups overops-service -t "takipi" -p '{"collector_host":"tcp.example.com", "collector_port":"1234"}'`
+     cf cups overops-service -t "takipi" -p '{"collector_host":"collector.apps.internal", "collector_port":"8080"}'`
      ```
 
 1. Bind the service to your application:
@@ -206,7 +185,7 @@ Version number is incremented based on `tile-history.yml`.
 * Update user defined service
 
     ```sh
-    cf uups overops-service -t "takipi" -p '{"collector_host":"tcp_domain", "collector_port":"port_to_app"}'
+    cf uups overops-service -t "takipi" -p '{"collector_host":"collector.apps.internal", "collector_port":"8080"}'
     ```
 
 * Need a sample app? Use [Spring Music](https://github.com/cloudfoundry-samples/spring-music)
