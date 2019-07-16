@@ -94,7 +94,7 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
 1. Add a network policy between the container to monitor and the collector. The source app is the application with the OverOps Agent.
 
     ```sh
-    cf add-network-policy my-app --destination-app overops-collector --protocol tcp --port 8080
+    cf add-network-policy my-app --destination-app overops-collector -s DESTINATION_SPACE_NAME -o DESTINATION_ORG_NAME --protocol tcp --port 8080
     ```
 
 1. Create a user defined service to set `collector_host` and `collector_port`(default port that a container listens on is 8080) and tag with `takipi` to enable the Agent:
