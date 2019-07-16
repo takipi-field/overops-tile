@@ -14,7 +14,7 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
   cf login [-a API_URL] [-u USERNAME] [-p PASSWORD]
   ```
 
-* Ensure that there is an `apps.internal` domain if one does not already exist:
+* Confirm that the `apps.internal` domain exists:
 
   ```sh
   cf domains
@@ -85,13 +85,14 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
 
 1. After the changes have been deployed, the OverOps Collector will be in the Org and Space entered during configuration.
 
-1. Map apps.internal route to the Collector with a hostname with `--hostname name`. Note app name will contain version number, e.g. `overops-collector-0.9.1`.
+1. Map an `apps.internal` route to the Collector with a hostname with `--hostname name`. This is a shared domain. Be sure to use a unique hostname for each Collector. Note app name will contain version number, e.g. `overops-collector-0.9.1`.
 
      ```sh
      cf map-route overops-collector apps.internal --hostname collector
      ```
 
-1. Add a network policy between the container to monitor and the collector. The source app is the application with the OverOps agent. 
+1. Add a network policy between the container to monitor and the collector. The source app is the application with the OverOps Agent.
+
     ```sh
     cf add-network-policy agent_app --destination-app overops-collector -s DESTINATION_SPACE_NAME -o DESTINATION_ORG_NAME --protocol tcp --port 8080
     ```
@@ -99,19 +100,19 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
 1. Create a user defined service to set `collector_host` and `collector_port`(default port that a container listens on is 8080) and tag with `takipi` to enable the Agent:
 
      ```sh
-     cf cups overops-service -t "takipi" -p '{"collector_host":"collector.apps.internal", "collector_port":"8080"}'`
+     cf cups overops-service -t "takipi" -p '{"collector_host":"collector.apps.internal", "collector_port":"8080"}'
      ```
 
 1. Bind the service to your application:
 
      ```sh
-     cf bind-service my_app overops-service
+     cf bind-service my-app overops-service
      ```
 
 1. Restage your application:
 
      ```sh
-     cf restage my_app
+     cf restage my-app
      ```
 
 1. Confirm connectivity with the backend by going to [https://app.overops.com/](https://app.overops.com).
@@ -173,13 +174,13 @@ Version number is incremented based on `tile-history.yml`.
 * Enable SSH
 
   ```sh
-  cf enable-ssh app_name
+  cf enable-ssh my-app
   ```
 
 * SSH into a running tile
 
   ```sh
-  cf ssh app_name
+  cf ssh my-app
   ```
 
 * Update user defined service
