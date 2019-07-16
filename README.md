@@ -85,7 +85,7 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
 
 1. After the changes have been deployed, the OverOps Collector will be in the Org and Space entered during configuration.
 
-1. Map an `apps.internal` route to the Collector with a hostname with `--hostname name`. This is a shared domain. Be sure to use a unique hostname for each Collector. Note app name will contain version number, e.g. `overops-collector-0.9.1`.
+1. Map an `apps.internal` route to the Collector with a hostname with `--hostname name`. This is a shared domain. Be sure to use a unique hostname for each Collector. Note `my-app` will contain version number, e.g. `overops-collector-0.9.1`.
 
      ```sh
      cf map-route overops-collector apps.internal --hostname collector
