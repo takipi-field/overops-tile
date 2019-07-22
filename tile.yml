@@ -15,7 +15,7 @@ packages:
     stemcell: default
     command: |
       tar xzvf takipi-4.38.0.tar.gz
-      export TAKIPI_LISTEN_PORT=$PORT
+      export TAKIPI_LISTEN_PORT=$PORT 
       nohup takipi/bin/takipi-service -l &
     path: overops-collector.jar
     env:
@@ -27,12 +27,16 @@ forms:
   - name: takipi_base_url
     type: string
     label: OverOps Backend URL
+    default: https://backend.overops.com
+    description: "URL for the Overops Analysis Server"
   - name: takipi_secret_key
     type: secret
     label: OverOps Installation Key
   - name: takipi_server_name
     type: string
     label: Server Name
+    default: PCF
+    description: "The name of the server, used to filter events originating from specific machines. See Naming the Application, Server, Deployment in OverOps documentation for more information."
   - name: cf_org
     type: string
     label: Org
