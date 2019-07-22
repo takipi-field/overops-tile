@@ -15,7 +15,7 @@ packages:
     stemcell: default
     command: |
       tar xzvf takipi-4.38.0.tar.gz
-      export TAKIPI_LISTEN_PORT=$PORT 
+      export TAKIPI_LISTEN_PORT=$PORT
       nohup takipi/bin/takipi-service -l &
     path: overops-collector.jar
     env:
