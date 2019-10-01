@@ -1,0 +1,18 @@
+---
+applications:
+  - name: collector
+    buildpacks:
+      - https://github.com/cloudfoundry/binary-buildpack.git
+    memory: 2G
+    disk_quota: 2G
+    no-route: true
+    stemcell: default
+    command: |
+      tar xzvf OpenJDK8U-jdk_x64_linux_hotspot_8u222b10.tar.gz
+      tar xzvf takipi-4.38.0.tar.gz
+      export TAKIPI_LISTEN_PORT=$PORT
+      nohup takipi/bin/takipi-service -l &
+    path: ./
+    env:
+      JVM_LIB_FILE: ./jdk8u222-b10/jre/lib/amd64/server/libjvm.so
+      TAKIPI_SECRET_KEY: ### redacted ###

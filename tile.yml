@@ -1,14 +1,14 @@
 ---
 name: overops
 icon_file: resources/OverOps.png
-label: OverOps Reliability Platform for PCF
-description: This Tile provides all components of the OverOps Reliability Platform for PCF. Identify and resolve critical errors with continuous code analysis and machine learning across your software delivery life cycle.
+label: OverOps Collector for PCF
+description: This Tile provides the OverOps Collector PCF. Identify and resolve critical errors with continuous code analysis and machine learning across your software delivery life cycle.
 packages:
 - name: overops_collector
   type: app
   health_check: none
   manifest:
-    buildpack: https://github.com/cloudfoundry/java-buildpack.git
+    buildpack: https://github.com/cloudfoundry/binary-buildpack.git
     memory: 2G
     disk_quota: 2G
     no-route: true
