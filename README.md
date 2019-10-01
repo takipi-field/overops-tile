@@ -121,40 +121,6 @@ This repository is the OverOps Collector Tile used in Pivotal Cloud Foundry (PCF
 
 1. Download the [latest Collector](https://app.overops.com/app/download?t=tgz)
 
-1. Move `overops-collector.jar` to a temporary folder
-
-    ```sh
-    mkdir tmp
-    mv overops-collector.jar tmp
-    ```
-
-1. Extract the jar
-
-    ```sh
-    jar xf overops-collector.jar
-    rm overops-collector.jar
-    ```
-
-1. Replace the Collector
-
-1. Create a new jar
-
-    ```sh
-    jar cMvf overops-collector.jar *
-    ```
-
-1. Replace the jar
-
-    ```sh
-    mv overops-collector.jar ..
-    cd ..
-    rm -r tmp
-    ```
-
-1. Update the version in `tile.yml`.
-
-1. If the new Collector requires changes to environment variables, change them in `tile.yml`.
-
 ## Building the Tile
 
 To build the tile (`.pivotal` file) from `tile.yml`, run:
